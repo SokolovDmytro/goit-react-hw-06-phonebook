@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from './ContactsList.module.css'
-import { connect } from "react-redux";
-import contactsActions from "../../../redux/contacts/contactsActions";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './ContactsList.module.css';
+import { connect } from 'react-redux';
+import contactsActions from '../../../redux/contacts/contactsActions';
 
 const ContactListItem = ({ contact: { id, name, number }, removeContact }) => {
   return (
@@ -13,7 +13,7 @@ const ContactListItem = ({ contact: { id, name, number }, removeContact }) => {
         className={styles.button}
         type="button"
         id={id}
-        onClick={()=>removeContact({id})}
+        onClick={removeContact}
       >
         X
       </button>
@@ -25,13 +25,12 @@ ContactListItem.propTypes = {
   contact: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired
-  })
+    number: PropTypes.string.isRequired,
+  }),
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   removeContact: () => dispatch(contactsActions.removeContact(ownProps.id)),
 });
-
 
 export default connect(null, mapDispatchToProps)(ContactListItem);

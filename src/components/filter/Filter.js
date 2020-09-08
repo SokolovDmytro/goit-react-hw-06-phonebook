@@ -2,9 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import contactsActions from '../../redux/contacts/contactsActions';
 
-// import PropTypes from "prop-types";
-
-const Filter = ({ filter, getFilterValue, getName, filterValue }) => (
+const Filter = ({ getFilterValue, filterValue }) => (
   <>
     <p>Find contact by name</p>
     <input
@@ -24,8 +22,5 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   getFilterValue: contactsActions.getFilterValue,
 };
-// Filter.propTypes = {
-//   getName: PropTypes.func.isRequired
-// };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);
