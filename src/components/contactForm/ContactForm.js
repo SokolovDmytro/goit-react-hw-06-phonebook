@@ -1,29 +1,44 @@
-import React, { Component } from "react";
-import { v4 as uuidv4 } from "uuid";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import contactsActions from '../../redux/contacts/contactsActions';
 
 class ContactForm extends Component {
   state = {
-  name: "",
-  number: ""
+    name: '',
+    number: '',
+  };
+  changeAlertFn = () => {
+    this.props.switchAlert();
+    setTimeout(() => {
+      this.props.switchAlert();
+    }, 2500);
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.submitContact({
-      name: this.state.name,
-      number: this.state.number,
-      id: uuidv4()
-    });
-    this.setState({
-      name: "",
-      number: ""
-    });
+    if (this.state.name) {
+      const isNameExist = this.props.items.some(
+        contact => contact.name === this.state.name,
+      );
+      !isNameExist
+        ? this.props.onAddContact({
+            name: this.state.name,
+            number: this.state.number,
+          })
+        : this.changeAlertFn();
+
+      this.setState({
+        name: '',
+        number: '',
+      });
+    }
+    return;
   };
 
   handleChange = e => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -57,7 +72,18 @@ class ContactForm extends Component {
 
 ContactForm.protoType = {
   name: PropTypes.string,
-  number: PropTypes.string
+  number: PropTypes.string,
 };
 
-export default ContactForm;
+const mapStateToProps = state => {
+  return {
+    items: state.items,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  onAddContact: contact => dispatch(contactsActions.addContact(contact)),
+  switchAlert: () => dispatch(contactsActions.existContact()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);

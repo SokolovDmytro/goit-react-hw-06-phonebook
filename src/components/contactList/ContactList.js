@@ -15,6 +15,7 @@ const ContactList = ({ contacts, deleteContact }) => (
       >
         <ContactListItem
           contact={contact}
+          id={contact.id}
           // key={contact.id}
           deleteContact={deleteContact}
         />
